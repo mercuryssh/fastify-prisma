@@ -1,17 +1,4 @@
-import Fastify from 'fastify'
+import ServerFactory from './modules/server/factory.js'
 
-const server = Fastify({ logger: true })
-
-server.get('/', async (request, reply) => {
-  await reply.send({ greeter: 'The Show Must Go On' })
-})
-
-const runServer = async (): Promise<void> => {
-  try {
-    await server.listen(4444)
-  } catch (err) {
-    server.log.error(err)
-    process.exit()
-  }
-}
-runServer().catch((reason) => server.log.error(reason))
+const app = ServerFactory.createServer(process.env.NODE_ENV ?? 'development')
+app.run().catch(null)
